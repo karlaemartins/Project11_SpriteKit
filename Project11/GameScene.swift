@@ -74,39 +74,54 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if objects.contains(editLabel) {
                 editingMode.toggle()
             } else {
-                let ball = SKSpriteNode(imageNamed: "ballRed")
+                if editingMode {
+                       
+                    let size = CGSize(
+                        width: Int.random(in: 16...128),
+                        height: 16
+                    )
 
-                ball.physicsBody = SKPhysicsBody(
-                    circleOfRadius: ball.size.width / 2.0
-                )
+                    let box = SKSpriteNode(
+                        color: UIColor(
+                            red: CGFloat.random(in: 0...1),
+                            green: CGFloat.random(in: 0...1),
+                            blue: CGFloat.random(in: 0...1),
+                            alpha: 1
+                        ),
+                        size: size
+                    )
 
-                ball.physicsBody!.contactTestBitMask =
-                    ball.physicsBody!.collisionBitMask
+                    box.zRotation = CGFloat.random(in: 0...3)
+                    box.position = location
 
-                ball.physicsBody?.restitution = 0.6
+                    box.physicsBody = SKPhysicsBody(
+                        rectangleOf: box.size
+                    )
 
-                ball.name = "ball"
-                ball.position = location
+                    box.physicsBody?.isDynamic = false
 
-                addChild(ball)
+                    addChild(box)
+                    
+                   } else {
+                       
+                       let ball = SKSpriteNode(imageNamed: "ballRed")
+
+                       ball.physicsBody = SKPhysicsBody(
+                           circleOfRadius: ball.size.width / 2.0
+                       )
+
+                       ball.physicsBody!.contactTestBitMask =
+                           ball.physicsBody!.collisionBitMask
+
+                       ball.physicsBody?.restitution = 0.6
+
+                       ball.name = "ball"
+                       ball.position = location
+
+                       addChild(ball)
+                   }
             }
-
-            let ball = SKSpriteNode(imageNamed: "ballRed")
-            ball.name = "ball"
-            ball.physicsBody = SKPhysicsBody(
-                circleOfRadius: ball.size.width / 2.0
-            )
-            
-            ball.physicsBody!.contactTestBitMask =
-                ball.physicsBody!.collisionBitMask
-
-            ball.physicsBody?.restitution = 0.6
-
-            ball.position = location
-
-            addChild(ball)
         }
-
     }
     
     func makeBouncer(at position: CGPoint) {
