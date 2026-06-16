@@ -66,18 +66,28 @@ class GameScene: SKScene {
     }
     
     func makeSlot(at position: CGPoint, isGood: Bool) {
+        var slotGlow: SKSpriteNode
         var slotBase: SKSpriteNode
 
         if isGood {
-            slotBase = SKSpriteNode(imageNamed: "slotBaseGood.png")
+            slotBase = SKSpriteNode(imageNamed: "slotBaseGood")
+            slotGlow = SKSpriteNode(imageNamed: "slotGlowGood")
         } else {
-            slotBase = SKSpriteNode(imageNamed: "slotBaseBad.png")
+            slotBase = SKSpriteNode(imageNamed: "slotBaseBad")
+            slotGlow = SKSpriteNode(imageNamed: "slotGlowBad")
         }
 
         slotBase.position = position
+        slotGlow.position = position
         
-        print(slotBase.size)
+        let spin = SKAction.rotate(byAngle: .pi, duration: 10)
+        let spinForever = SKAction.repeatForever(spin)
+
+        slotGlow.run(spinForever)
+
         addChild(slotBase)
+        addChild(slotGlow)
+        
     }
 }
 
