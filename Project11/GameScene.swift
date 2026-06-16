@@ -10,10 +10,20 @@ import SpriteKit
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var scoreLabel: SKLabelNode!
-
     var score = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
+        }
+    }
+    
+    var editLabel: SKLabelNode!
+    var editingMode: Bool = false {
+        didSet {
+            if editingMode {
+                editLabel.text = "Done"
+            } else {
+                editLabel.text = "Edit"
+            }
         }
     }
 
@@ -47,17 +57,42 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLabel.position = CGPoint(x: 980, y: 700)
 
         addChild(scoreLabel)
+        
+        editLabel = SKLabelNode(fontNamed: "Chalkduster")
+        editLabel.text = "Edit"
+        editLabel.position = CGPoint(x: 80, y: 700)
+
+        addChild(editLabel)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         if let touch = touches.first {
             let location = touch.location(in: self)
+            
+            let objects = nodes(at: location)
+            if objects.contains(editLabel) {
+                editingMode.toggle()
+            } else {
+                let ball = SKSpriteNode(imageNamed: "ballRed")
+
+                ball.physicsBody = SKPhysicsBody(
+                    circleOfRadius: ball.size.width / 2.0
+                )
+
+                ball.physicsBody!.contactTestBitMask =
+                    ball.physicsBody!.collisionBitMask
+
+                ball.physicsBody?.restitution = 0.6
+
+                ball.name = "ball"
+                ball.position = location
+
+                addChild(ball)
+            }
 
             let ball = SKSpriteNode(imageNamed: "ballRed")
-            
             ball.name = "ball"
-
             ball.physicsBody = SKPhysicsBody(
                 circleOfRadius: ball.size.width / 2.0
             )
