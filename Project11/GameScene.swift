@@ -26,6 +26,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    
+    var ballsRemainingLabel: SKLabelNode!
+
+    var ballsRemaining = 5 {
+        didSet {
+            ballsRemainingLabel.text = "Balls: \(ballsRemaining)"
+        }
+    }
 
     override func didMove(to view: SKView) {
         
@@ -63,6 +71,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         editLabel.position = CGPoint(x: 80, y: 700)
 
         addChild(editLabel)
+        
+        ballsRemainingLabel = SKLabelNode(fontNamed: "Chalkduster")
+        ballsRemainingLabel.text = "Balls: 5"
+        ballsRemainingLabel.position = CGPoint(x: 512, y: 700)
+
+        addChild(ballsRemainingLabel)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -93,6 +107,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
                     box.zRotation = CGFloat.random(in: 0...3)
                     box.position = location
+                    box.name = "box"
 
                     box.physicsBody = SKPhysicsBody(
                         rectangleOf: box.size
@@ -103,6 +118,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     addChild(box)
                     
                    } else {
+                       
+                       if ballsRemaining == 0 {
+                              return
+                          }
                        
                        let ballColors = [
                            "ballBlue",
@@ -135,6 +154,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                        )
 
                        addChild(ball)
+                       ballsRemaining -= 1
                    }
             }
         }
@@ -190,9 +210,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if object.name == "good" {
             destroy(ball: ball)
             score += 1
+            ballsRemaining += 1
+
         } else if object.name == "bad" {
             destroy(ball: ball)
             score -= 1
+
+        } else if object.name == "box" {
+            object.removeFromParent()
         }
     }
     
