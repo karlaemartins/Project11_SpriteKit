@@ -104,7 +104,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     
                    } else {
                        
-                       let ball = SKSpriteNode(imageNamed: "ballRed")
+                       let ballColors = [
+                           "ballBlue",
+                           "ballCyan",
+                           "ballGreen",
+                           "ballGrey",
+                           "ballPurple",
+                           "ballRed",
+                           "ballYellow"
+                       ]
+
+                       let randomBall = ballColors.randomElement()!
+                       
+                       let ball = SKSpriteNode(imageNamed: randomBall)
 
                        ball.physicsBody = SKPhysicsBody(
                            circleOfRadius: ball.size.width / 2.0
