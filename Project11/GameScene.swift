@@ -128,7 +128,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                        ball.physicsBody?.restitution = 0.6
 
                        ball.name = "ball"
-                       ball.position = location
+                       
+                       ball.position = CGPoint(
+                           x: location.x,
+                           y: 700
+                       )
 
                        addChild(ball)
                    }
